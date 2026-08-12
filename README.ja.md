@@ -4,7 +4,7 @@
 ![AutoHotkey v2](https://img.shields.io/badge/AutoHotkey-v2-334455)
 [![License: MIT](https://img.shields.io/badge/license-MIT-green)](LICENSE)
 
-[English README is here](README.md)
+[English](README.md)
 
 ファイルをひとつ実行するだけで、**VIVE Ultimate Tracker の電源をまとめてオフ**にできます。
 

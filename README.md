@@ -4,7 +4,7 @@
 ![AutoHotkey v2](https://img.shields.io/badge/AutoHotkey-v2-334455)
 [![License: MIT](https://img.shields.io/badge/license-MIT-green)](LICENSE)
 
-[日本語版 README はこちら](README.ja.md)
+[日本語](README.ja.md)
 
 Turn off **all your VIVE Ultimate Trackers at once** — just run a single file.
 
