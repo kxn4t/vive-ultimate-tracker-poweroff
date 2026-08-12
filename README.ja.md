@@ -17,9 +17,8 @@ AutoHotkey v2 スクリプトが UI オートメーションで VIVE Hub を自�
 
 スクリプトを実行すると、VIVE Hub の画面状態によらず以下を全自動で行います。
 
-1. VIVE Hub のウィンドウを探す。**未起動なら自動で起動**
-   （VIVE Hub はウィンドウを閉じるとプロセスごと終了する仕様のため、
-   exe の再実行で復帰させます）
+1. VIVE Hub のウィンドウを探す。**VIVE Hub が起動していなければ、
+   トラッカーも接続されていないはずなので、通知だけ出して何もせず終了**
 2. 設定ウィンドウが開いていなければ、**歯車メニューの「設定」を自動で呼び出して開く**
 3. 「VIVE トラッカー (Ultimate)」タブを選択
 4. 「すべてオフにする」をクリック
@@ -81,8 +80,6 @@ VIVE Hub のアップデートで UI の AutomationId や文言が変わると�
 
 設定はすべてスクリプト冒頭にまとまっています。
 
-- `EXE_PATH` … VIVE Hub 本体のパス
-  （既定: `C:\Program Files\VIVE Hub\VIVE Hub\VHConsole\VHConsole.exe`）
 - `ID_*` … 各 UI 要素の AutomationId（VIVE Hub 2.5.6 で確認済み）
 - `*_REGEX` … 名前ベースのフォールバック用正規表現（日本語・英語 UI 両対応）
 - `*_TIMEOUT` … 各ステップの待ち時間

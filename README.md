@@ -16,11 +16,10 @@ true one-press "trackers off" switch.
 ## How it works
 
 Running the script performs all of the following automatically, regardless of
-the current state of VIVE Hub:
+the current window state of VIVE Hub:
 
-1. Finds the VIVE Hub window, **launching VIVE Hub if it is not running**
-   (VIVE Hub exits together with its window, so the script re-runs the exe to
-   bring it back)
+1. Finds the VIVE Hub window. **If VIVE Hub is not running, no trackers can
+   be connected, so the script just notifies you and exits**
 2. If the settings window is not open, **opens it via the gear menu**
 3. Selects the "VIVE Tracker (Ultimate)" tab
 4. Clicks "Turn off all"
@@ -84,8 +83,6 @@ the settings window, run it while the settings screen is open.
 
 All settings live at the top of the script:
 
-- `EXE_PATH` … path to the VIVE Hub executable
-  (default: `C:\Program Files\VIVE Hub\VIVE Hub\VHConsole\VHConsole.exe`)
 - `ID_*` … AutomationIds of the UI elements (verified with VIVE Hub 2.5.6)
 - `*_REGEX` … name-based fallback regexes (match both Japanese and English UI)
 - `*_TIMEOUT` … timeout for each step

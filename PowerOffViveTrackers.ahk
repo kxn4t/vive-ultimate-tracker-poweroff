@@ -9,7 +9,8 @@
 ; Stream Deck "System: Open" action.
 ;
 ; Flow:
-;   1. Find the VIVE Hub window (launch it if not running)
+;   1. Find the VIVE Hub window (if VIVE Hub is not running, nothing can be
+;      connected, so just notify and exit)
 ;   2. Open the settings window from the gear menu if it is not already open
 ;   3. Select the "VIVE Tracker (Ultimate)" tab
 ;   4. Click "Turn off all" (if disabled, all trackers are already off)
@@ -29,9 +30,6 @@
 
 ;========================= Settings (edit if needed) =========================
 
-; Path to the VIVE Hub executable (VHConsole.exe)
-EXE_PATH := A_ProgramFiles "\VIVE Hub\VIVE Hub\VHConsole\VHConsole.exe"
-
 ; AutomationIds of UI elements (verified with VIVE Hub 2.5.6)
 ID_MAIN_WINDOW     := "VHConsoleMainWindow"   ; main window
 ID_SETTINGS_WINDOW := "SettingsWindow"        ; settings window
@@ -48,7 +46,6 @@ TURN_OFF_ALL_REGEX := "i)^(すべてオフにする|全てオフにする|Turn\s
 CONFIRM_REGEX      := "i)^(オフにする|Turn\s*off|Power\s*off|OK)$"
 
 ; Timeouts (milliseconds)
-LAUNCH_TIMEOUT   := 30000  ; waiting for VIVE Hub to launch
 SETTINGS_TIMEOUT := 10000  ; waiting for the settings window to open
 BUTTON_TIMEOUT   := 8000   ; waiting for "Turn off all" to appear
 ENABLED_TIMEOUT  := 4000   ; grace period for the button to become enabled
@@ -61,8 +58,7 @@ VERIFY_TIMEOUT   := 12000  ; waiting for the tracking count to reach 0
 if (A_Language = "0411") {
     T := Map(
         "title",          "VIVEトラッカー電源オフ",
-        "hubNotFound",    "VIVE Hub が見つかりませんでした。`nスクリプト内の EXE_PATH を確認してください。",
-        "hubNoWindow",    "VIVE Hub を起動しましたが、ウィンドウが表示されませんでした。",
+        "notRunning",     "VIVE Hub が起動していないため、何もせず終了しました",
         "mainWinFail",    "VIVE Hub のメインウィンドウが取得できませんでした。",
         "menuFail",       "設定メニューを開けませんでした。`ndump モードでUI要素を確認してください。",
         "settingsFail",   "設定ウィンドウが開きませんでした。",
@@ -75,8 +71,7 @@ if (A_Language = "0411") {
 } else {
     T := Map(
         "title",          "VIVE Tracker Power Off",
-        "hubNotFound",    "VIVE Hub was not found.`nCheck EXE_PATH in the script.",
-        "hubNoWindow",    "VIVE Hub was launched, but its window did not appear.",
+        "notRunning",     "VIVE Hub is not running — nothing to do",
         "mainWinFail",    "Could not get the VIVE Hub main window.",
         "menuFail",       "Could not open the settings menu.`nRun in dump mode to inspect the UI elements.",
         "settingsFail",   "The settings window did not open.",
@@ -122,13 +117,12 @@ FindButtonAnywhere(nameRegex) {
 }
 
 ;--- 1. Ensure the VIVE Hub main window exists -------------------------------
+; VIVE Hub quits together with its window (closing it prompts to exit), so
+; no window means VIVE Hub is not running and no tracker can be connected
 if !WinExist("VIVE Hub " APP_EXE) {
-    ; Hidden in the tray or not running -> running the exe shows the window
-    if !FileExist(EXE_PATH)
-        Fail(T["hubNotFound"] "`n" EXE_PATH)
-    Run '"' EXE_PATH '"'
-    if !WinWait("VIVE Hub " APP_EXE, , LAUNCH_TIMEOUT / 1000)
-        Fail(T["hubNoWindow"])
+    TrayTip T["notRunning"], T["title"], "Mute"
+    Sleep 2000
+    ExitApp
 }
 
 ;--- Dump mode: export the UI element tree of every VIVE Hub window ----------
