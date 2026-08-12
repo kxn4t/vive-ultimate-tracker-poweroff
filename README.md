@@ -106,4 +106,4 @@ MIT License — see [LICENSE](LICENSE).
 
 The bundled `UIA.ahk` is a third-party library
 ([Descolada/UIA-v2](https://github.com/Descolada/UIA-v2)) and is licensed
-separately under the MIT License — see [LICENSE-UIA.txt](LICENSE-UIA.txt).
+separately under the MIT License — see [LICENSE-UIA](LICENSE-UIA).

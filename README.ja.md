@@ -102,5 +102,5 @@ MIT License — [LICENSE](LICENSE) を参照してください。
 
 同梱の `UIA.ahk` はサードパーティー製ライブラリ
 （[Descolada/UIA-v2](https://github.com/Descolada/UIA-v2)）であり、
-別途 MIT License で提供されています。[LICENSE-UIA.txt](LICENSE-UIA.txt) を
+別途 MIT License で提供されています。[LICENSE-UIA](LICENSE-UIA) を
 参照してください。
