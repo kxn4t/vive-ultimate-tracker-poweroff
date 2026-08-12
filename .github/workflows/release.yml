@@ -1,0 +1,54 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Download AutoHotkey v2 and Ahk2Exe
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release download --repo AutoHotkey/AutoHotkey --pattern "*.zip" --dir ahk-dl
+          Expand-Archive (Get-ChildItem ahk-dl\*.zip | Select-Object -First 1).FullName -DestinationPath ahk
+          gh release download --repo AutoHotkey/Ahk2Exe --pattern "*.zip" --dir ahk2exe-dl
+          Expand-Archive (Get-ChildItem ahk2exe-dl\*.zip | Select-Object -First 1).FullName -DestinationPath ahk2exe
+
+      - name: Compile
+        shell: pwsh
+        run: |
+          $p = Start-Process -FilePath ".\ahk2exe\Ahk2Exe.exe" -Wait -PassThru -NoNewWindow -ArgumentList `
+            '/in', 'PowerOffViveTrackers.ahk', `
+            '/out', 'PowerOffViveTrackers.exe', `
+            '/base', 'ahk\AutoHotkey64.exe', `
+            '/silent', 'verbose'
+          if ($p.ExitCode -ne 0 -or -not (Test-Path 'PowerOffViveTrackers.exe')) {
+            throw "Ahk2Exe failed with exit code $($p.ExitCode)"
+          }
+
+      - name: Package
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory dist | Out-Null
+          Copy-Item PowerOffViveTrackers.exe, LICENSE, LICENSE-UIA, LICENSE-AutoHotkey, README.md, README.ja.md dist\
+          Compress-Archive -Path dist\* -DestinationPath "vive-ultimate-tracker-poweroff-${{ github.ref_name }}.zip"
+
+      - name: Create draft release
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "${{ github.ref_name }}" `
+            "vive-ultimate-tracker-poweroff-${{ github.ref_name }}.zip" `
+            --title "${{ github.ref_name }}" --generate-notes --draft

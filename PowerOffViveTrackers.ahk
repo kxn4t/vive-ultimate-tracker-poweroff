@@ -24,6 +24,9 @@
 ; run the script with the argument "dump" to export all UI elements of
 ; VIVE Hub, then update the AutomationIds / regexes in the settings below.
 ;==============================================================================
+;@Ahk2Exe-SetName VIVE Ultimate Tracker PowerOff
+;@Ahk2Exe-SetDescription Turn off all VIVE Ultimate Trackers at once
+;@Ahk2Exe-SetCopyright Copyright (c) 2026 @kxn4t
 #Requires AutoHotkey v2.0
 #SingleInstance Force
 #Include %A_ScriptDir%\UIA.ahk
