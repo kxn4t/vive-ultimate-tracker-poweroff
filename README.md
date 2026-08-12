@@ -43,9 +43,9 @@ VIVE Hub 2.5.6). Both the Japanese and English VIVE Hub UI are supported.
 ## Setup
 
 1. Install AutoHotkey **v2** from https://www.autohotkey.com/
-2. Download this repository (Code → Download ZIP, or `git clone`) and place
-   the folder anywhere you like. Keep `UIA.ahk` in the same folder as
-   `PowerOffViveTrackers.ahk`
+2. Download this repository (Code → Download ZIP and extract it, or
+   `git clone`) and place the folder anywhere you like. Keep `UIA.ahk` in
+   the same folder as `PowerOffViveTrackers.ahk`
 
 ## Usage
 

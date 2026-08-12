@@ -42,9 +42,9 @@ VIVE Hub の UI は日本語・英語のどちらにも対応しています。
 ## セットアップ
 
 1. https://www.autohotkey.com/ から AutoHotkey **v2** をインストールする
-2. このリポジトリをダウンロード（Code → Download ZIP、または `git clone`）して
-   好きな場所に配置する。`UIA.ahk` は `PowerOffViveTrackers.ahk` と
-   同じフォルダーに置いたままにしてください
+2. このリポジトリをダウンロードして（Code → Download ZIP して展開、
+   または `git clone`）、フォルダーごと好きな場所に配置する。`UIA.ahk` は
+   `PowerOffViveTrackers.ahk` と同じフォルダーに置いたままにしてください
 
 ## 使い方
 
