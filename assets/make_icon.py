@@ -16,8 +16,6 @@ SS = 8  # supersampling factor
 BASE = 256
 S = BASE * SS
 
-BG_TOP = (30, 36, 48)        # background: dark slate
-BG_BOTTOM = (18, 22, 30)
 BODY_TOP = (62, 70, 84)      # tracker body: charcoal
 BODY_BOTTOM = (38, 44, 56)
 FACE = (50, 57, 70)          # face plate, slightly lighter than body edge
@@ -44,14 +42,12 @@ def vertical_gradient(size, top, bottom):
 def make_base():
     img = Image.new("RGBA", (S, S), (0, 0, 0, 0))
 
-    # rounded-square background
-    mask = Image.new("L", (S, S), 0)
-    ImageDraw.Draw(mask).rounded_rectangle(
-        [0, 0, S - 1, S - 1], radius=int(S * 0.22), fill=255)
-    img.paste(vertical_gradient((S, S), BG_TOP, BG_BOTTOM), (0, 0), mask)
-
-    # --- tracker body: wide rounded pebble ---
-    bw, bh = S * 0.78, S * 0.60
+    # --- tracker body: wide rounded pebble on a transparent background,
+    # filling the canvas (small margin for antialiasing) ---
+    bw = S * 0.98
+    bh = bw * 0.77
+    # u scales all glyph metrics so proportions stay tied to the body size
+    u = bw / 0.78
     bx0, by0 = (S - bw) / 2, (S - bh) / 2
     bx1, by1 = bx0 + bw, by0 + bh
     body_radius = bh * 0.42
@@ -65,13 +61,13 @@ def make_base():
     draw = ImageDraw.Draw(img)
 
     # face plate: inset rounded shape, slightly lighter
-    inset = S * 0.035
+    inset = u * 0.035
     draw.rounded_rectangle(
         [bx0 + inset, by0 + inset, bx1 - inset, by1 - inset],
         radius=body_radius - inset * 0.8, fill=FACE + (255,))
 
     # --- camera lenses at the left and right edges, vertically centered ---
-    lens_r = S * 0.042
+    lens_r = u * 0.042
     lens_cy = by0 + bh / 2
     for lx in (bx0 + bw * 0.115, bx1 - bw * 0.115):
         draw.ellipse([lx - lens_r, lens_cy - lens_r,
@@ -80,8 +76,8 @@ def make_base():
 
     # --- power symbol where the VIVE logo sits ---
     cx, cy = S / 2, by0 + bh * 0.57
-    r = S * 0.135
-    stroke = int(S * 0.045)
+    r = u * 0.135
+    stroke = int(u * 0.045)
 
     # subtle glow behind the glyph (blurred so it fades out smoothly)
     glow = Image.new("RGBA", (S, S), (0, 0, 0, 0))
@@ -89,7 +85,7 @@ def make_base():
     ImageDraw.Draw(glow).ellipse(
         [cx - glow_r, cy - glow_r, cx + glow_r, cy + glow_r],
         fill=ACCENT + (60,))
-    glow = glow.filter(ImageFilter.GaussianBlur(S * 0.05))
+    glow = glow.filter(ImageFilter.GaussianBlur(u * 0.05))
     img.alpha_composite(glow)
 
     draw = ImageDraw.Draw(img)
