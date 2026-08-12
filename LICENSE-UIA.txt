@@ -1,6 +1,11 @@
+This license applies to UIA.ahk, taken from the UIA-v2 library:
+https://github.com/Descolada/UIA-v2
+
+---
+
 MIT License
 
-Copyright (c) 2026 @kxn4t
+Copyright (c) 2023 Descolada
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
